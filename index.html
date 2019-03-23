@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Hello World!</title>
+  </head>
+  <body>
+    <h1>Hello World!</h1>
+
+    <div>
+      We are using node <script>document.write(process.versions.node)</script>,
+      Chrome <script>document.write(process.versions.chrome)</script>,
+      and Electron <script>document.write(process.versions.electron)</script>.
+    </div>
+
+    <div>
+      <h2>Test Area</h2>
+      <div>
+        <button id="test-button">Test</button>
+      </div>
+      <div id="data-container">
+        <!-- Data -->
+      </div>
+    </div>
+
+    <script>
+      const { ipcRenderer } = require('electron')
+      const testButton = document.getElementById('test-button')
+      testButton.addEventListener('click', (e) => {
+        // Send messages to main.js
+        ipcRenderer.send('update', 'Some info')
+        ipcRenderer.send('asynchronous-message', 'ping')
+      })
+
+      console.log(ipcRenderer.sendSync('synchronous-message', 'ping')) // prints "pong"
+
+      ipcRenderer.on('asynchronous-reply', (event, arg) => {
+        // Receive messages from main.js
+        console.log(arg) // prints "pong"
+        const container = document.getElementById('data-container')
+        const stuff = arg.map((item) => `<p>${item}<p>`)
+        container.innerHTML = stuff.join('')
+      })
+      
+    </script>
+   
+  </body>
+</html>
