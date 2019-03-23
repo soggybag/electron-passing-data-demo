@@ -17,6 +17,7 @@
       <h2>Test Area</h2>
       <div>
         <button id="test-button">Test</button>
+        <input type="number" id="count" value="10" />
       </div>
       <div id="data-container">
         <!-- Data -->
@@ -27,13 +28,22 @@
       const { ipcRenderer } = require('electron')
       const testButton = document.getElementById('test-button')
       testButton.addEventListener('click', (e) => {
-        // Send messages to main.js
-        ipcRenderer.send('update', 'Some info')
-        ipcRenderer.send('asynchronous-message', 'ping')
+        // Send an 'update' messages TO main.js
+        ipcRenderer.send('update', 'Ping')
+        // Send an 'asynchronous-message' messages TO main.js
+        const count = Number(document.getElementById('count').value)
+        ipcRenderer.send('asynchronous-message', count)
+      })
+
+      // Listen for message 'target' from main.js
+      ipcRenderer.on('target', (event, arg) => {
+        // recieves message FROM main process main.js
+        console.log('message "target" received arg:', arg)
       })
 
       console.log(ipcRenderer.sendSync('synchronous-message', 'ping')) // prints "pong"
 
+      // Listen for message 'asynchronous-reply' from main.js
       ipcRenderer.on('asynchronous-reply', (event, arg) => {
         // Receive messages from main.js
         console.log(arg) // prints "pong"

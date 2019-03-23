@@ -50,16 +50,22 @@ app.on('activate', () => {
 
 
 // ********
+// This section demonstrates how to pass data back and 
+// forth between the main process and a render process
+// (a web page/html file)
+
+// Listens for an 'update' event from a renderer
 ipcMain.on('update', (event, arg) => {
+  // sends arg to the renderer
   win.webContents.send('target', arg)
   console.log('arg:'+arg)
 })
 
-ipcMain.on('asynchronous-message', (event, arg) => {
-  console.log(arg) // prints "ping"
+ipcMain.on('asynchronous-message', (event, count) => {
+  console.log(count) // prints "ping"
   // event.reply('asynchronous-reply', 'pong') // Doesn't work for some reason???
   const data = []
-  for (let i = 0; i < 10; i += 1) {
+  for (let i = 0; i < count; i += 1) {
     data.push(Math.random())
   }
   win.webContents.send('asynchronous-reply', data)
@@ -69,4 +75,6 @@ ipcMain.on('synchronous-message', (event, arg) => {
   console.log(arg) // prints "ping"
   event.returnValue = 'pong'
 })
+
+
 
