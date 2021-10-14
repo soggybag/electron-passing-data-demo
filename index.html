@@ -2,15 +2,18 @@
 <html>
   <head>
     <meta charset="UTF-8">
-    <title>Hello World!</title>
+    <title>Hello Foo!</title>
   </head>
   <body>
-    <h1>Hello World!</h1>
+    <h1>Hello Bar!</h1>
 
     <div>
-      We are using node <script>document.write(process.versions.node)</script>,
-      Chrome <script>document.write(process.versions.chrome)</script>,
-      and Electron <script>document.write(process.versions.electron)</script>.
+      We are using node 
+      <script>document.write(process.versions.node)</script>,
+      Chrome 
+      <script>document.write(process.versions.chrome)</script>,
+      and Electron 
+      <script>document.write(process.versions.electron)</script>.
     </div>
 
     <div>
@@ -23,6 +26,13 @@
         <!-- Data -->
       </div>
     </div>
+
+
+    <script type="module">
+      import { foo, bar } from './my-module.js'
+      console.log(foo, bar)
+    </script>
+
 
     <script>
       const { ipcRenderer } = require('electron')
